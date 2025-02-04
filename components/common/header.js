@@ -1,4 +1,4 @@
-
+import AuthButton from "@/config/authButton";
 
 export default function Header() {
 
@@ -7,12 +7,10 @@ export default function Header() {
         <div className="flex items-center space-x-3">
             <h1 className="text-4xl font-extrabold tracking-tight">blinky.gg</h1>
             <span className="px-3 py-1 bg-secondary text-xs uppercase rounded-full font-semibold">
-                alpha
+                testnet
             </span>
         </div>
-        <button className="px-6 py-2 bg-secondary hover:bg-thirty transition-colors duration-300 text-text font-bold rounded-full shadow-lg">
-            Connect Wallet
-        </button>
+        <AuthButton/>
     </header>
   );
 }
