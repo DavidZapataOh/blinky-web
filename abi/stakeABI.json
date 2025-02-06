@@ -1,0 +1,1374 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_ownerWallet",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_stakedToken",
+				"type": "address"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_stakePeriod",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_depositFees",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_withdrawlsFees",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_rewardRate",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_emergencyFees",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_platformFee",
+				"type": "uint128"
+			},
+			{
+				"internalType": "address",
+				"name": "_treasury",
+				"type": "address"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_maxStakeLimit",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "OwnableInvalidOwner",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "OwnableUnauthorizedAccount",
+		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "_stakePeriod",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "_depositFees",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "_withdrawlFees",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "_rewardRate",
+				"type": "uint128"
+			}
+		],
+		"name": "AddStakeType",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "rewardAmount",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "stakeType",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			}
+		],
+		"name": "Claim",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "rewardAmount",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "stakeType",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "poolTotalStaked",
+				"type": "uint128"
+			}
+		],
+		"name": "Compound",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			}
+		],
+		"name": "DeleteStakeType",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "stakeAmount",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "stakeType",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "stakePeriod",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "poolTotalStaked",
+				"type": "uint128"
+			}
+		],
+		"name": "Deposit",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "amount",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "stakeType",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "poolTotalStaked",
+				"type": "uint128"
+			}
+		],
+		"name": "EmergencyWithdrawn",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "_stakeToken",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "oldFee",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "newFee",
+				"type": "uint128"
+			}
+		],
+		"name": "UpdateEmergencyFee",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "_stakeToken",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "oldOwnerWallet",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwnerWallet",
+				"type": "address"
+			}
+		],
+		"name": "UpdateOwnerWallet",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "_stakeToken",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "oldFee",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "newFee",
+				"type": "uint128"
+			}
+		],
+		"name": "UpdatePlatformFee",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newTokenAddr",
+				"type": "address"
+			}
+		],
+		"name": "UpdateStakeToken",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "_stakePeriod",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "_depositFees",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "_withdrawlFees",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "_rewardRate",
+				"type": "uint128"
+			}
+		],
+		"name": "UpdateStakeType",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "_stakeToken",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "oldTreasuryWallet",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newTreasuryWallet",
+				"type": "address"
+			}
+		],
+		"name": "UpdateTreasuryWallet",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "stakeAmount",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "stakeType",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "rewardAmount",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint128",
+				"name": "poolTotalStaked",
+				"type": "uint128"
+			}
+		],
+		"name": "Withdraw",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint128",
+				"name": "_stakePeriod",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_depositFees",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_withdrawlFees",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_rewardRate",
+				"type": "uint128"
+			}
+		],
+		"name": "addStakedType",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			}
+		],
+		"name": "claim",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "claimAndWithdrawFreeze",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			}
+		],
+		"name": "compound",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			}
+		],
+		"name": "deleteStakeType",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_amount",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			}
+		],
+		"name": "deposit",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "emitAmount",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_period",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_totalPoolStaked",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "emergencyFees",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			}
+		],
+		"name": "emergencyWithdraw",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			}
+		],
+		"name": "getPoolData",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint128",
+						"name": "stakeType",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "stakePeriod",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "depositFees",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "withdrawlFees",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "rewardRate",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "totalStakedIn",
+						"type": "uint128"
+					},
+					{
+						"internalType": "bool",
+						"name": "isActive",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct DFKStake.StakeTypeData",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getPoolLength",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "isStaker",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "maxStakeLimit",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "ownerWallet",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "platformFee",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint128",
+				"name": "_amount",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_time",
+				"type": "uint128"
+			}
+		],
+		"name": "rewardCalculation",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "stakeTypesList",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "stakeType",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "stakePeriod",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "depositFees",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "withdrawlFees",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "rewardRate",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "totalStakedIn",
+				"type": "uint128"
+			},
+			{
+				"internalType": "bool",
+				"name": "isActive",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "stakedToken",
+		"outputs": [
+			{
+				"internalType": "contract IERC20Metadata",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "stakerIndex",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "stakers",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalStaked",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "treasury",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint128",
+				"name": "newFees",
+				"type": "uint128"
+			}
+		],
+		"name": "updateEmergencyFees",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwnerWallet",
+				"type": "address"
+			}
+		],
+		"name": "updateOwnerWallet",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint128",
+				"name": "newFee",
+				"type": "uint128"
+			}
+		],
+		"name": "updatePlatformFee",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint128",
+				"name": "_newLimit",
+				"type": "uint128"
+			}
+		],
+		"name": "updateStakeLimit",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_stakePeriod",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_depositFees",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_withdrawlFees",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_rewardRate",
+				"type": "uint128"
+			}
+		],
+		"name": "updateStakeType",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newTreasuryWallet",
+				"type": "address"
+			}
+		],
+		"name": "updateTreasuryWallet",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "userAllStakesData",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "stakeAmount",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "depositTime",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "fullWithdrawlTime",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "lastClaimTime",
+				"type": "uint128"
+			},
+			{
+				"internalType": "bool",
+				"name": "accumulated",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"name": "userStakesData",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "stakeAmount",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "depositTime",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "fullWithdrawlTime",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "lastClaimTime",
+				"type": "uint128"
+			},
+			{
+				"internalType": "bool",
+				"name": "accumulated",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "userTotalStake",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			}
+		],
+		"name": "userTotalTxPerPool",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint128",
+						"name": "stakeAmount",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "depositTime",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "fullWithdrawlTime",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "lastClaimTime",
+						"type": "uint128"
+					},
+					{
+						"internalType": "bool",
+						"name": "accumulated",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct DFKStake.eachTransaction[]",
+				"name": "userAllStakes",
+				"type": "tuple[]"
+			},
+			{
+				"internalType": "uint128",
+				"name": "len",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			}
+		],
+		"name": "userUnlockAmount",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "unlockAmount",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "lockAmount",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_amount",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "_stakeType",
+				"type": "uint128"
+			}
+		],
+		"name": "withdraw",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			},
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	}
+]
